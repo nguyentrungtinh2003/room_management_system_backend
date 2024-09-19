@@ -11,6 +11,8 @@ import java.util.List;
 @Data
 public class Room {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String roomName;
@@ -29,5 +31,6 @@ public class Room {
     )
     private List<User> tenants = new ArrayList<>();
 
+    @Enumerated(EnumType.STRING)
     private RoomStatus status;
 }
