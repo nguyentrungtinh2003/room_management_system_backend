@@ -5,9 +5,11 @@ import com.TrungTinhFullStack.room_management_system_backend.Entity.User;
 import com.TrungTinhFullStack.room_management_system_backend.Repository.BuildingRepository;
 import com.TrungTinhFullStack.room_management_system_backend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class BuildingServiceImpl implements BuildingService {
 
     @Autowired

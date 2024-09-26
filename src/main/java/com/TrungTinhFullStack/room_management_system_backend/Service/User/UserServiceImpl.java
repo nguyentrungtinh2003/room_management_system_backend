@@ -79,7 +79,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(
-             String username, String password, String email,
+            String username, String password, String email,
             MultipartFile img, String phoneNumber, String citizenIdentification,
             String address,String role) throws IOException {
 
@@ -87,12 +87,12 @@ public class UserServiceImpl implements UserService {
         Path filePath = uploadsPath.resolve(fileName);
         Files.write(filePath,img.getBytes());
 
-        com.TrungTinhFullStack.room_management_system_backend.Entity.User user =
-                userRepository.findByUsername(username);
-        if(user != null) {
+        User user1 = userRepository.findByUsername(username);
+        if(user1 != null && user1.getUsername().equals(username)) {
             throw new RuntimeException("User already exists");
         }
 
+        User user = new User();
         Role role1 = Role.valueOf(role.toUpperCase());
         user.setImg(fileName);
         user.setEmail(email);
@@ -101,6 +101,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(password));
         user.setCitizenIdentification(citizenIdentification);
         user.setUsername(username);
+        user.setEnabled(true);
         user.setPhoneNumber(phoneNumber);
 
         userRepository.save(user);
