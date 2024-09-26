@@ -1,4 +1,4 @@
-package com.TrungTinhFullStack.room_management_system_backend.Service;
+package com.TrungTinhFullStack.room_management_system_backend.Service.Building;
 
 import com.TrungTinhFullStack.room_management_system_backend.Entity.Building;
 import org.springframework.stereotype.Service;

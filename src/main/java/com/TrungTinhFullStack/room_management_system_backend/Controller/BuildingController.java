@@ -1,7 +1,7 @@
 package com.TrungTinhFullStack.room_management_system_backend.Controller;
 
 import com.TrungTinhFullStack.room_management_system_backend.Entity.Building;
-import com.TrungTinhFullStack.room_management_system_backend.Service.BuildingService;
+import com.TrungTinhFullStack.room_management_system_backend.Service.Building.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

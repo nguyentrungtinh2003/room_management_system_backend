@@ -1,10 +1,9 @@
-package com.TrungTinhFullStack.room_management_system_backend.Service.Impl;
+package com.TrungTinhFullStack.room_management_system_backend.Service.Building;
 
 import com.TrungTinhFullStack.room_management_system_backend.Entity.Building;
 import com.TrungTinhFullStack.room_management_system_backend.Entity.User;
 import com.TrungTinhFullStack.room_management_system_backend.Repository.BuildingRepository;
 import com.TrungTinhFullStack.room_management_system_backend.Repository.UserRepository;
-import com.TrungTinhFullStack.room_management_system_backend.Service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
