@@ -15,6 +15,8 @@ public class Building {
 
     private String address;
 
+    private String img;
+
     @ManyToOne()
     @JoinColumn(name = "landlord_id")
     private User landlord;

@@ -17,6 +17,8 @@ public class Room {
 
     private String roomName;
 
+    private String img;
+
     @ManyToOne()
     @JoinColumn(name = "building_id")
     private Building building;

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -29,8 +31,11 @@ public class BuildingController {
     }
 
     @PostMapping()
-    public ResponseEntity<Building> addBuilding(@RequestBody Building building) {
-        Building building1 = buildingService.addBuilding(building);
+    public ResponseEntity<Building> addBuilding(@RequestPart String name,
+                                                @RequestPart String address,
+                                                @RequestPart MultipartFile img,
+                                                @RequestPart Long landlord_id) throws IOException {
+        Building building1 = buildingService.addBuilding(name,address,img,landlord_id);
         return new ResponseEntity<>(building1, HttpStatus.OK);
     }
 
