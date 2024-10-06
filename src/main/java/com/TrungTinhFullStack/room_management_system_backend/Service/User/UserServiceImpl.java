@@ -11,15 +11,18 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -36,9 +39,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private static final String UPLOAD_DIR = "/uploads";
-
-    Path uploadsPath = Paths.get(UPLOAD_DIR);
+    private static final String UPLOAD_DIR = "uploads/";
 
     @Override
     public ReqRes login(ReqRes request) {
@@ -84,9 +85,16 @@ public class UserServiceImpl implements UserService {
             MultipartFile img, String phoneNumber, String citizenIdentification,
             String address,String role) throws IOException {
 
-        String fileName = img.getOriginalFilename();
-        Path filePath = uploadsPath.resolve(fileName);
-        Files.write(filePath,img.getBytes());
+        Path uploadPath = Paths.get(UPLOAD_DIR);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        String fileName = null;
+            fileName = img.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+            Files.write(filePath,img.getBytes());
+
 
         User user1 = userRepository.findByUsername(username);
         if(user1 != null && user1.getUsername().equals(username)) {
@@ -123,14 +131,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(Long id, String username, String password, String email, MultipartFile img,
-                           String phoneNumber, String citizenIdentification, String address, String role) {
+                           String phoneNumber, String citizenIdentification, String address, String role) throws IOException {
         User user = getUserById(id);
-        if(password != null || password.isEmpty()) {
+        if(password != null && password.isBlank()) {
             user.setPassword(passwordEncoder.encode(password));
         }
-        if(img != null || img.isEmpty()) {
-            user.setImg(img.getOriginalFilename());
+        if(img != null && img.isEmpty()) {
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(img.getOriginalFilename()));
+            user.setImg(fileName);
+            Path path = Paths.get("uploads/" + fileName);
+            Files.copy(img.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         }
+
+        if (role != null && !role.isEmpty()) {
+            user.setRole(Role.valueOf(role.toUpperCase()));
+        }
+
         user.setEmail(email);
         user.setAddress(address);
         user.setCitizenIdentification(citizenIdentification);
@@ -148,5 +164,10 @@ public class UserServiceImpl implements UserService {
         User user = getUserById(id);
         userRepository.delete(user);
         return user;
+    }
+
+    @Override
+    public List<User> searchUserByUsername(String username) {
+        return userRepository.findByUsernameContainingIgnoreCase(username);
     }
 }

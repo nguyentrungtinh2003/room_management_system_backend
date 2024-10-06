@@ -16,6 +16,7 @@ List<User> getAllUser();
 User getUserById(Long id);
 User updateUser(Long id,String username, String password, String email, MultipartFile img,
                 String phoneNumber, String citizenIdentification,
-                String address,String role);
+                String address,String role) throws IOException;
 User deleteUser(Long id);
+List<User> searchUserByUsername(String username);
 }

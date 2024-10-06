@@ -41,6 +41,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUser());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<User>> getSearchUserByUsername(@RequestParam String username) {
+        return ResponseEntity.ok(userService.searchUserByUsername(username));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
@@ -49,13 +54,13 @@ public class UserController {
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id,
                                         @RequestPart String username,
-                                        @RequestPart String password,
+                                        @RequestPart(required = false) String password,
                                         @RequestPart String email,
-                                        @RequestPart MultipartFile img,
+                                        @RequestPart(required = false) MultipartFile img,
                                         @RequestPart String phoneNumber,
                                         @RequestPart String citizenIdentification,
                                         @RequestPart String address,
-                                        @RequestPart String role) {
+                                        @RequestPart(required = false) String role) throws IOException {
         return ResponseEntity.ok(userService.updateUser(id,username,password,email,img,phoneNumber,citizenIdentification,address,role));
     }
 
