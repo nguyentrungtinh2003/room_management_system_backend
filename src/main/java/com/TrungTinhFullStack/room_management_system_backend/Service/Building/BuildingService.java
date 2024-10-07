@@ -12,6 +12,7 @@ public interface BuildingService {
     Building addBuilding(String name, String address, MultipartFile img,Long landlord_id) throws IOException;
     List<Building> getAllBuilding();
     Building getBuildingById(Long id);
-    Building updateBuilding(Long id,Building building);
+    Building updateBuilding(Long id,String name,String address,MultipartFile img,Long landlord_id) throws IOException;
     Building deleteBuilding(Long id);
+    List<Building> searchBuildingByName(String name);
 }

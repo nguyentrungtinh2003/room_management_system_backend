@@ -6,13 +6,16 @@ import com.TrungTinhFullStack.room_management_system_backend.Repository.Building
 import com.TrungTinhFullStack.room_management_system_backend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BuildingServiceImpl implements BuildingService {
@@ -23,14 +26,18 @@ public class BuildingServiceImpl implements BuildingService {
     @Autowired
     private UserRepository userRepository;
 
-    private static final String UPLOAD_DIR = "/uploads";
-
-    Path uploadsPath = Paths.get(UPLOAD_DIR);
+    private static final String UPLOAD_DIR = "uploads/";
 
     @Override
     public Building addBuilding(String name, String address, MultipartFile img, Long landlord_id) throws IOException {
-        String fileName = img.getOriginalFilename();
-        Path filePath = uploadsPath.resolve(fileName);
+        Path uploadPath = Paths.get(UPLOAD_DIR);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+
+        String fileName = null;
+        fileName = img.getOriginalFilename();
+        Path filePath = uploadPath.resolve(fileName);
         Files.write(filePath,img.getBytes());
 
         User user = userRepository.findById(landlord_id).orElse(null);
@@ -58,12 +65,26 @@ public class BuildingServiceImpl implements BuildingService {
     }
 
     @Override
-    public Building updateBuilding(Long id, Building building) {
+    public Building updateBuilding(Long id, String name, String address,MultipartFile img,Long landlord_id) throws IOException {
         Building building1 = buildingRepository.findById(id).orElse(null);
-        User user = userRepository.findById(building.getLandlord().getId()).orElse(null);
+        User user = userRepository.findById(landlord_id).orElse(null);
 
-        building1.setName(building.getName());
-        building1.setAddress(building.getAddress());
+        if(img != null && !img.isEmpty()) {
+            String fileName = StringUtils.cleanPath(Objects.requireNonNull(img.getOriginalFilename()));
+            assert building1 != null;
+            building1.setImg(fileName);
+            Path path = Paths.get("uploads/" + fileName);
+            Files.copy(img.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        }
+        if(name != null && !name.isEmpty()) {
+            assert building1 != null;
+            building1.setName(name);
+        }
+        if(address != null && !address.isEmpty()) {
+            assert building1 != null;
+            building1.setAddress(address);
+        }
+        assert building1 != null;
         building1.setLandlord(user);
 
         buildingRepository.save(building1);
@@ -75,5 +96,10 @@ public class BuildingServiceImpl implements BuildingService {
         Building building = buildingRepository.findById(id).orElse(null);
         buildingRepository.deleteById(id);
         return building;
+    }
+
+    @Override
+    public List<Building> searchBuildingByName(String name) {
+        return buildingRepository.findByNameContainingIgnoreCase(name);
     }
 }

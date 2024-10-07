@@ -18,7 +18,7 @@ public class BuildingController {
     @Autowired
     private BuildingService buildingService;
 
-    @GetMapping()
+    @GetMapping("/all")
     public ResponseEntity<List<Building>> getAllBuilding() {
         List<Building> buildings = buildingService.getAllBuilding();
         return new ResponseEntity<>(buildings, HttpStatus.OK);
@@ -30,22 +30,32 @@ public class BuildingController {
         return new ResponseEntity<>(building1, HttpStatus.OK);
     }
 
-    @PostMapping()
-    public ResponseEntity<Building> addBuilding(@RequestPart String name,
-                                                @RequestPart String address,
-                                                @RequestPart MultipartFile img,
-                                                @RequestPart Long landlord_id) throws IOException {
+    @GetMapping("/search")
+    public ResponseEntity<List<Building>> searchBuildingByName(@RequestParam String name) {
+        List<Building> building1 = buildingService.searchBuildingByName(name);
+        return new ResponseEntity<>(building1, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Building> addBuilding(@RequestParam("name") String name,
+                                                @RequestParam("address") String address,
+                                                @RequestParam("landlord_id") Long landlord_id,
+                                                @RequestPart MultipartFile img) throws IOException {
         Building building1 = buildingService.addBuilding(name,address,img,landlord_id);
         return new ResponseEntity<>(building1, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Building> updateBuilding(@PathVariable Long id,@RequestBody Building building) {
-        Building building1 = buildingService.updateBuilding(id,building);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Building> updateBuilding(@PathVariable Long id,
+                                                   @RequestParam(value = "name",required = false) String name,
+                                                   @RequestParam(value = "address",required = false) String address,
+                                                   @RequestParam(value = "landlord_id",required = false) Long landlord_id,
+                                                   @RequestPart(required = false) MultipartFile img) throws IOException {
+        Building building1 = buildingService.updateBuilding(id,name,address,img,landlord_id);
         return new ResponseEntity<>(building1, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Building> deleteBuilding(@PathVariable Long id) {
         Building building1 = buildingService.deleteBuilding(id);
         return new ResponseEntity<>(building1, HttpStatus.OK);
