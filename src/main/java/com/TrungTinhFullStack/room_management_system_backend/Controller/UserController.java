@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin
 @RestController
@@ -67,5 +68,30 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.deleteUser(id));
+    }
+
+    // API gửi OTP đến email
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        return ResponseEntity.ok(userService.sendOtpToEmail(email));
+    }
+
+    // API xác nhận OTP và thay đổi mật khẩu
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> request) throws IllegalAccessException {
+        String email = request.get("email");
+        String otp = request.get("otp");
+        String newPassword = request.get("newPassword");
+
+        return ResponseEntity.ok(userService.verifyOtpAndChangePassword(email, otp, newPassword));
+    }
+
+    @PostMapping("/sendMail")
+    public ResponseEntity<String> sendMail(@RequestBody Map<String, String> request) {
+        String email = request.get("email");
+        String subject = request.get("subject");
+        String body = request.get("body");
+        return ResponseEntity.ok(userService.sendMail(email,subject,body));
     }
 }

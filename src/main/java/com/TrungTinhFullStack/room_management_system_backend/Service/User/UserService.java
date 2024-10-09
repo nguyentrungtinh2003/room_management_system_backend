@@ -19,4 +19,7 @@ User updateUser(Long id,String username, String password, String email, Multipar
                 String address,String role) throws IOException;
 User deleteUser(Long id);
 List<User> searchUserByUsername(String username);
+String sendOtpToEmail(String email);
+String verifyOtpAndChangePassword(String email, String otp, String newPassword) throws IllegalAccessException;
+String sendMail(String to,String subject,String body);
 }
