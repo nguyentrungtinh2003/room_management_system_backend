@@ -35,4 +35,6 @@ public class Room {
 
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
+
+    private boolean isDeleted = false;
 }

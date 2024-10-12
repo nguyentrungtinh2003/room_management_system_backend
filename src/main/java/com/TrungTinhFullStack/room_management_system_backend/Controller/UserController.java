@@ -2,9 +2,12 @@ package com.TrungTinhFullStack.room_management_system_backend.Controller;
 
 import com.TrungTinhFullStack.room_management_system_backend.Dto.ReqRes;
 import com.TrungTinhFullStack.room_management_system_backend.Entity.User;
+import com.TrungTinhFullStack.room_management_system_backend.Repository.UserRepository;
 import com.TrungTinhFullStack.room_management_system_backend.Service.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,9 +23,33 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody ReqRes request) {
         return ResponseEntity.ok(userService.login(request));
+    }
+
+    @GetMapping("/success")
+    public ResponseEntity<?> success(@AuthenticationPrincipal OAuth2User principal) {
+
+        if (principal == null) {
+            return ResponseEntity.ok("redirect:/login"); // Nếu chưa đăng nhập, chuyển hướng về trang login
+        }
+
+        String email = principal.getAttribute("email");
+        String name = principal.getAttribute("name");
+
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            user = new User();
+            user.setEmail(email);
+            user.setUsername(name);
+            userRepository.save(user);
+        }
+
+        return ResponseEntity.ok(user);
     }
 
     @PostMapping("/register")

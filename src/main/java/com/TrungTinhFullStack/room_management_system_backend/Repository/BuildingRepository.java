@@ -8,5 +8,6 @@ import java.util.List;
 
 @Repository
 public interface BuildingRepository extends JpaRepository<Building,Long> {
-    List<Building> findByNameContainingIgnoreCase(String name);
+    List<Building> findByNameContainingIgnoreCaseAndIsDeletedFalse(String name);
+    List<Building> findAllByIsDeletedFalse();
 }

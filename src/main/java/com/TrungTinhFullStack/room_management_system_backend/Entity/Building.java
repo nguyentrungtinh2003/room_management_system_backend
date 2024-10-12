@@ -20,4 +20,6 @@ public class Building {
     @ManyToOne()
     @JoinColumn(name = "landlord_id")
     private User landlord;
+
+    private boolean isDeleted = false;
 }

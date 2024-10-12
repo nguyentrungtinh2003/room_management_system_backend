@@ -54,7 +54,7 @@ public class BuildingServiceImpl implements BuildingService {
 
     @Override
     public List<Building> getAllBuilding() {
-        List<Building> buildings = buildingRepository.findAll();
+        List<Building> buildings = buildingRepository.findAllByIsDeletedFalse();
         return buildings;
     }
 
@@ -94,12 +94,13 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public Building deleteBuilding(Long id) {
         Building building = buildingRepository.findById(id).orElse(null);
-        buildingRepository.deleteById(id);
+        building.setDeleted(true);
+        buildingRepository.save(building);
         return building;
     }
 
     @Override
     public List<Building> searchBuildingByName(String name) {
-        return buildingRepository.findByNameContainingIgnoreCase(name);
+        return buildingRepository.findByNameContainingIgnoreCaseAndIsDeletedFalse(name);
     }
 }
