@@ -36,6 +36,12 @@ public class BuildingController {
         return new ResponseEntity<>(building1, HttpStatus.OK);
     }
 
+    @GetMapping("/landlordId/{id}")
+    public ResponseEntity<List<Building>> getAllBuildingByLandlordId(@PathVariable Long id) {
+        List<Building> building1 = buildingService.getAllBuildingByLandlord(id);
+        return new ResponseEntity<>(building1, HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Building> addBuilding(@RequestParam("name") String name,
                                                 @RequestParam("address") String address,

@@ -103,4 +103,9 @@ public class BuildingServiceImpl implements BuildingService {
     public List<Building> searchBuildingByName(String name) {
         return buildingRepository.findByNameContainingIgnoreCaseAndIsDeletedFalse(name);
     }
+
+    @Override
+    public List<Building> getAllBuildingByLandlord(Long id) {
+        return buildingRepository.findAllByLandlordId(id);
+    }
 }

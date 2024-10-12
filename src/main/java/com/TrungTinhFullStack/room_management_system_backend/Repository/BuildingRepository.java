@@ -10,4 +10,5 @@ import java.util.List;
 public interface BuildingRepository extends JpaRepository<Building,Long> {
     List<Building> findByNameContainingIgnoreCaseAndIsDeletedFalse(String name);
     List<Building> findAllByIsDeletedFalse();
+    List<Building> findAllByLandlordId(Long id);
 }

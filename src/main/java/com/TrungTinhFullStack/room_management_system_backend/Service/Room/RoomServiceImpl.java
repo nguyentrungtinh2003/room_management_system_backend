@@ -128,4 +128,10 @@ public class RoomServiceImpl implements RoomService{
     public List<Room> searchRoomByName(String name) {
         return roomRepository.findByRoomNameContainingIgnoreCaseAndIsDeletedFalse(name);
     }
+
+    @Override
+    public List<Room> getAllRoomByBuildingId(Long id) {
+        return roomRepository.findAllByBuildingId(id);
+    }
+
 }

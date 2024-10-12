@@ -15,5 +15,6 @@ public interface RoomService {
                  MultipartFile img,List<Long> tenantIds) throws IOException;
     Room deleteRoom(Long id);
     List<Room> searchRoomByName(String name);
+    List<Room> getAllRoomByBuildingId(Long id);
 
 }

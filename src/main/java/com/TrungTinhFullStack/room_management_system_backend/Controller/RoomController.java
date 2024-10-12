@@ -36,6 +36,12 @@ public class RoomController {
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 
+    @GetMapping("/buildingId/{id}")
+    public ResponseEntity <List<Room>> getAllRoomByBuildingId(@PathVariable Long id) {
+        List<Room> rooms = roomService.getAllRoomByBuildingId(id);
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
+
     @PostMapping("/add")
     public ResponseEntity <Room> addRoom(@RequestParam String roomName,
                                          @RequestParam Double rentPrice,
