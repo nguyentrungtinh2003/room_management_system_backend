@@ -45,7 +45,7 @@ public class User implements UserDetails {
     private String otp;
     private LocalDateTime otpExpiry;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private boolean enabled;
 
     @Override

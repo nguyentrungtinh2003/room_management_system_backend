@@ -164,7 +164,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User deleteUser(Long id) {
         User user = getUserById(id);
-        userRepository.delete(user);
+        user.setEnabled(false);
+        userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public User unlockUser(Long id) {
+        User user = getUserById(id);
+        user.setEnabled(true);
+        userRepository.save(user);
         return user;
     }
 

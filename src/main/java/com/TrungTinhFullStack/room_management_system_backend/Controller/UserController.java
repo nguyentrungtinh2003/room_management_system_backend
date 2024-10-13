@@ -97,6 +97,11 @@ public class UserController {
         return ResponseEntity.ok(userService.deleteUser(id));
     }
 
+    @PutMapping("/unlock/{id}")
+    public ResponseEntity<User> unlockUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.unlockUser(id));
+    }
+
     // API gửi OTP đến email
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> request) {
