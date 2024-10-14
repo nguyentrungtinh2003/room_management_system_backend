@@ -16,5 +16,6 @@ public interface RoomService {
     Room deleteRoom(Long id);
     List<Room> searchRoomByName(String name);
     List<Room> getAllRoomByBuildingId(Long id);
+    List<Room> findRoomByTenantId(Long id);
 
 }

@@ -134,4 +134,9 @@ public class RoomServiceImpl implements RoomService{
         return roomRepository.findAllByBuildingId(id);
     }
 
+    @Override
+    public List<Room> findRoomByTenantId(Long id) {
+        return roomRepository.findAllByTenant(id);
+    }
+
 }
