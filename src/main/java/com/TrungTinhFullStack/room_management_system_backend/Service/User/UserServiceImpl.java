@@ -7,6 +7,10 @@ import com.TrungTinhFullStack.room_management_system_backend.Repository.UserRepo
 import com.TrungTinhFullStack.room_management_system_backend.Service.Email.EmailService;
 import com.TrungTinhFullStack.room_management_system_backend.Service.Jwt.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -224,5 +228,14 @@ public class UserServiceImpl implements UserService {
     public String sendMail(String to, String subject, String body) {
         emailService.sendMail(to,subject,body);
         return "Gửi email thành công !";
+    }
+
+    @Override
+    public Page<User> getUsersByPage(int page, int size, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page,size,sort);
+
+        return userRepository.findAll(pageable);
     }
 }

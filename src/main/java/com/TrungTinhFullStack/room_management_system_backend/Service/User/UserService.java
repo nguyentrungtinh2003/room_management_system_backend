@@ -2,6 +2,7 @@ package com.TrungTinhFullStack.room_management_system_backend.Service.User;
 
 import com.TrungTinhFullStack.room_management_system_backend.Dto.ReqRes;
 import com.TrungTinhFullStack.room_management_system_backend.Entity.User;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -23,4 +24,5 @@ List<User> searchUserByUsername(String username);
 String sendOtpToEmail(String email);
 String verifyOtpAndChangePassword(String email, String otp, String newPassword) throws IllegalAccessException;
 String sendMail(String to,String subject,String body);
+Page<User> getUsersByPage(int page, int size, String sortBy, String sortDir);
 }

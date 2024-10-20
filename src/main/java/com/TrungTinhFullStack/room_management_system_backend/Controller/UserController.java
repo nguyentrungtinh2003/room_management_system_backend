@@ -5,6 +5,7 @@ import com.TrungTinhFullStack.room_management_system_backend.Entity.User;
 import com.TrungTinhFullStack.room_management_system_backend.Repository.UserRepository;
 import com.TrungTinhFullStack.room_management_system_backend.Service.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -77,6 +78,14 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity<Page<User>> getUserByPage(@RequestParam(defaultValue = "0") int page,
+                                                    @RequestParam(defaultValue = "2") int size,
+                                                    @RequestParam(defaultValue = "username") String sortBy,
+                                                    @RequestParam(defaultValue = "desc") String sortDir) {
+        return ResponseEntity.ok(userService.getUsersByPage(page,size,sortBy,sortDir));
     }
 
     @PutMapping("/update/{id}")
