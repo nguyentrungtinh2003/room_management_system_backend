@@ -1,6 +1,7 @@
 package com.TrungTinhFullStack.room_management_system_backend.Service.Building;
 
 import com.TrungTinhFullStack.room_management_system_backend.Entity.Building;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,4 +17,5 @@ public interface BuildingService {
     Building deleteBuilding(Long id);
     List<Building> searchBuildingByName(String name);
     List<Building> getAllBuildingByLandlord(Long id);
+    Page<Building> getBuildingsByPage(int page, int size, String sortBy, String sortDir);
 }

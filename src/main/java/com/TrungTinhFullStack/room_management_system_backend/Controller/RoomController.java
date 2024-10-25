@@ -3,6 +3,7 @@ package com.TrungTinhFullStack.room_management_system_backend.Controller;
 import com.TrungTinhFullStack.room_management_system_backend.Entity.Room;
 import com.TrungTinhFullStack.room_management_system_backend.Service.Room.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +46,15 @@ public class RoomController {
     @GetMapping("/userId/{id}")
     public ResponseEntity <List<Room>> getAllRoomByUserId(@PathVariable Long id) {
         List<Room> rooms = roomService.findRoomByTenantId(id);
+        return new ResponseEntity<>(rooms, HttpStatus.OK);
+    }
+
+    @GetMapping("/page")
+    public ResponseEntity <Page<Room>> getRoomByPage(@RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "5") int size,
+                                                     @RequestParam(defaultValue = "roomName") String sortBy,
+                                                     @RequestParam(defaultValue = "asc") String sortDir) {
+        Page<Room> rooms = roomService.getRoomByPage(page,size,sortBy,sortDir);
         return new ResponseEntity<>(rooms, HttpStatus.OK);
     }
 

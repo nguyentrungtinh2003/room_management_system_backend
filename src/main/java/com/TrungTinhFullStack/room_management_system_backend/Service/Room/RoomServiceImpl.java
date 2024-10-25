@@ -10,6 +10,10 @@ import com.TrungTinhFullStack.room_management_system_backend.Repository.UserRepo
 import com.TrungTinhFullStack.room_management_system_backend.Service.Building.BuildingService;
 import com.TrungTinhFullStack.room_management_system_backend.Service.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -137,6 +141,14 @@ public class RoomServiceImpl implements RoomService{
     @Override
     public List<Room> findRoomByTenantId(Long id) {
         return roomRepository.findAllByTenant(id);
+    }
+
+    @Override
+    public Page<Room> getRoomByPage(int page, int size, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page,size,sort);
+        return roomRepository.findAll(pageable);
     }
 
 }

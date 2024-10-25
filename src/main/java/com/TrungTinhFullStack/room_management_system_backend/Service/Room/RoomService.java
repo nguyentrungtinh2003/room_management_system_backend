@@ -1,6 +1,7 @@
 package com.TrungTinhFullStack.room_management_system_backend.Service.Room;
 
 import com.TrungTinhFullStack.room_management_system_backend.Entity.Room;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,5 +18,6 @@ public interface RoomService {
     List<Room> searchRoomByName(String name);
     List<Room> getAllRoomByBuildingId(Long id);
     List<Room> findRoomByTenantId(Long id);
+    Page<Room> getRoomByPage(int page,int size,String sortBy,String sortDir);
 
 }

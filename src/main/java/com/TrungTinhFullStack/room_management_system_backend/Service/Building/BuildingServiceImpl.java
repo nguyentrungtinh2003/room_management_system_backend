@@ -5,6 +5,10 @@ import com.TrungTinhFullStack.room_management_system_backend.Entity.User;
 import com.TrungTinhFullStack.room_management_system_backend.Repository.BuildingRepository;
 import com.TrungTinhFullStack.room_management_system_backend.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -107,5 +111,13 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public List<Building> getAllBuildingByLandlord(Long id) {
         return buildingRepository.findAllByLandlordId(id);
+    }
+
+    @Override
+    public Page<Building> getBuildingsByPage(int page, int size, String sortBy, String sortDir) {
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ?
+                Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page,size,sort);
+        return buildingRepository.findAll(pageable);
     }
 }
